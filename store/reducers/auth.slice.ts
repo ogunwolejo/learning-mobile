@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { loginThunck, registerThunck } from './thunck';
+import { loginThunck, registerThunck, verifyToken } from './thunck';
 
 export interface AuthState {
   id:string;
@@ -31,7 +31,6 @@ const AuthSlice = createSlice({
       })
 
       builder.addCase(loginThunck.rejected, (state:any, action:any) => {
-        console.log("EEEEEEE", action.payload.status)
         return {
           ...state,
           error:action.payload,
@@ -60,7 +59,6 @@ const AuthSlice = createSlice({
       })
 
       builder.addCase(registerThunck.rejected, (state:any, action:any) => {
-        console.log(action)
         return {
           ...state,
           error:action.payload.status,
@@ -74,6 +72,32 @@ const AuthSlice = createSlice({
           token:action.payload.data.token,
           id:action.payload.data.id,
           fullName:action.payload.data.fullName,
+          loading:false
+        }
+      })
+
+      // verification of token
+
+      builder.addCase(verifyToken.pending, (state:any, action:any) => {
+        return {
+          ...state,
+          loading:true
+        }
+      })
+
+      builder.addCase(verifyToken.rejected, (state:any, action:any) => {
+        return {
+          ...state,
+          error:action.payload.status,
+          loading:false
+        }
+      })
+
+      builder.addCase(verifyToken.fulfilled, (state:any, action:any) => {
+        return {
+          ...state,
+          id:action.payload.data.verified.id,
+          fullName:action.payload.data.verified.fullName,
           loading:false
         }
       })

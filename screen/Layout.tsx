@@ -2,8 +2,6 @@ import { FC, useEffect, useLayoutEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import Material from 'react-native-vector-icons/MaterialIcons'
 
-import { Text } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 
@@ -11,17 +9,9 @@ import Explore from './tabs/Explore';
 import Profile from './tabs/Profile';
 import { useAppTheme } from '../theme'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux'
-import { getCategoriesThunck } from '../store/reducers/thunck'
-
-
 const Tab = createMaterialBottomTabNavigator();
 
 const Layout: FC = () => {
-    const dispatch = useDispatch()
-
-   
     const {
         colors: {
             brandPrimary

@@ -65,8 +65,7 @@ const Signup: FC = () => {
     const submitHandler = async (value: ISignup) => {
         //@ts-ignore
         const response = await fetch(registerThunck({ fullName: value.fullName, email: value.email, password: value.password }))
-        console.log("RR", response)
-
+        
         if (response.payload.status !== "success") {
             if (!response.payload.status) {
                 return setError(response.payload)

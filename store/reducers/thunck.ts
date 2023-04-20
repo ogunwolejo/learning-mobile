@@ -33,14 +33,29 @@ export const registerThunck = createAsyncThunk(
                 email:arg.email,
                 fullName:arg.fullName
             })
-            console.log('register', response.data)
             return response.data
         } catch (error:any) {
-            console.log("ERROR",  error.response.data)
             return rejectWithValue(error.response.data)
         }
     }
 )
+
+
+// verification of token
+export const verifyToken = createAsyncThunk(
+    "token/verification",
+    async(token:string, {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`${API}/auth/verify`, {token})
+            return response.data
+        } catch (error:any) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+
+
 
 // get the list of categories
 export const getCategoriesThunck = createAsyncThunk(

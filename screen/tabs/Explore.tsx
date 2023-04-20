@@ -1,5 +1,5 @@
-import { FC, useLayoutEffect, useMemo, useState } from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { FC, useCallback, useLayoutEffect, useMemo, useState } from 'react'
+import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native'
 
 import { ActivityIndicator, Text, TextInput } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -64,6 +64,15 @@ const Explore: FC = () => {
         setSearchCategory(value)
     }
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        //@ts-ignore
+        await dispatch(getCategoriesThunck(null))
+        setRefreshing(false)
+    }, []);
+
     return (
         <SafeAreaView style={{ ...styles.container, backgroundColor: background }}>
             <Text style={{ ...styles.header }}> Explore Categories </Text>
@@ -75,9 +84,9 @@ const Explore: FC = () => {
                 activeOutlineColor={brandPrimary}
                 onChangeText={text => searchHandler(text)}
             />
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 {
-                    loading ? (
+                    (loading && !refreshing) ? (
                         <ActivityIndicator style={{ marginTop: 20 }} color={brandPrimary} size={30} />
                     ) : (
                         AppCategory?.map((el, index: number) => {

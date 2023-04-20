@@ -16,7 +16,6 @@ const CategoryComponent: FC<{ title: string; id: string }> = ({ title, id }) => 
 
     return (
         <TouchableOpacity onPress={() => {
-            console.log(id);
             //@ts-ignore
             navigation.navigate('course', {
                 data:id

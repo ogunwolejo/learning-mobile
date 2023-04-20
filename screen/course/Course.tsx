@@ -1,5 +1,5 @@
-import { FC, useEffect, useLayoutEffect } from 'react'
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { FC, useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { View, StyleSheet, FlatList, TouchableOpacity, RefreshControl } from 'react-native'
 
 import { Text, List, ActivityIndicator } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -63,11 +63,20 @@ const Course: FC = () => {
         data: store.course.data
     }))
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        //@ts-ignore
+        await dispatch(getCourseThunck(params.data))
+        setRefreshing(false)
+    }, []);
+
 
     return (
         <SafeAreaView style={styles.container}>
             {
-                loading ? (
+                (loading && !refreshing) ? (
                     <ActivityIndicator color={brandPrimary} size={30} />
                 ) : (
 
@@ -78,6 +87,9 @@ const Course: FC = () => {
                             data={data}
                             renderItem={({ item }) => <FetchCourse title={item.title} video={item.video} description={item.description} />}
                             keyExtractor={item => item._id}
+                            refreshing={true}
+                            showsVerticalScrollIndicator={false}
+                            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         />
                     )
                 )
