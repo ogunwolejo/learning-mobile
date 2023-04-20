@@ -44,21 +44,21 @@ export default function App() {
         //@ts-ignore
         await dispatch(verifyToken(token))
       }
-      await SplashScreen.hideAsync();
+      setTimeout(async() => await SplashScreen.hideAsync(), 1000)
+      //await SplashScreen.hideAsync();
     })()
   }, [])
 
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer >
+      <NavigationContainer>
         {
-          (id.trim().length > 0 && !loading) ? (
+          (id.trim().length > 0) ? (
             <Stack.Navigator screenOptions={{
               headerShown: false,
               headerBackVisible: true
             }}
-              //initialRouteName={`app`}
             >
               <Stack.Screen name='app' component={Layout} />
 
@@ -71,7 +71,6 @@ export default function App() {
               headerShown: false,
               headerBackVisible: true
             }}
-              //initialRouteName={`login`}
             >
               {/*grouping the authentication screens*/}
   
